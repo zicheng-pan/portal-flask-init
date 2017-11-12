@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AdminPage</title>
+    <style>
+
+        #additem input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+        color:    #fff;
+        font-family:cursive;
+        }
+        #additem input:-moz-placeholder, textarea:-moz-placeholder {
+        color:    #fff;
+        font-family:cursive;
+        }
+        #additem input::-moz-placeholder, textarea::-moz-placeholder {
+        color:    #fff;
+        font-family:cursive;
+        }
+        #additem input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+        color:    #fff;
+        font-family:cursive;
+        }
+
+        #additem{
+        margin:0 auto;
+        margin-top:20px;
+        width:fit-content;
+        width:-webkit-fit-content;
+        width:-moz-fit-content;
+        }
+        #additem input{
+        margin:10px auto;
+        width: 300px;
+        height: 35px;
+        padding-left: 10px;
+        border: 1px solid #9400D3;
+        border-radius: 5px;
+        outline: none;
+        background: #9370DB;
+        color: #fff;
+        font-size:20px;
+        line-height:35px;
+        /*text-align:center;*/
+        }
+
+        #additem #additem_button{
+        cursor: pointer;
+        }
+        #additem #additem_button:hover{
+        background:  #9932CC;
+        color:red;
+        }
+
+        #additem #additem_button{
+        margin:10px auto;
+        width: 200px;
+        height: 35px;
+        padding-left: 10px;
+        border: 1px solid #9400D3;
+        border-radius: 5px;
+        outline: none;
+        background: #9370DB;
+        color: #fff;
+        font-size:20px;
+        line-height:35px;
+        text-align:center;
+        display:block;
+        }
+
+    </style>
+    <script src="{{url_for('static', filename='browser.min.js')}}"></script>
+    <script src="{{url_for('static', filename='jquery.min.js')}}"></script>
+</head>
+<body>
+<div style="margin:0 auto; text-align:center">
+    {% if user != "null" and user != "fail" %}
+    Welcome,{{ user }}!
+    {% elif user =="null" or user == "fail" %}
+    {% if user == "fail" %}
+    <script>
+        alert("login failed");
+    </script>
+    {% endif %}
+    usernmae:<input type="text" name="username" id="username">
+    password:<input type="text" name="password" id="password">
+    <button onclick="submit_info()">login</button>
+    {% endif %}
+</div>
+
+
+<div id="additem">
+    <input type="text" name="parentNode" placeholder="parentNode" id="parentNode"><br>
+    <input type="text" placeholder="name" name="name" id="name"><br>
+    <input type="text" placeholder="url" name="url" id="url"><br>
+    <button onclick="right_submit()" id="additem_button">submit</button>
+</div>
+</body>
+<script>
+　　 function trim(str){
+　　     return str.replace(/(^\s*)|(\s*$)/g, "");
+　　 }
+　　 function ltrim(str){
+　　     return str.replace(/(^\s*)/g,"");
+　　 }
+　　 function rtrim(str){
+　　     return str.replace(/(\s*$)/g,"");
+　　 }
+
+    function submit_info(){
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        url = "login?info="+username+"/"+password;
+        document.location.href = url;
+    }
+    $('#additem>input').focus(function(){
+        $(this).css('border','2px solid #B0C4DE');
+    });
+    $('#additem>input').blur(function(){
+        $(this).css('border','1px solid #9400D3');
+    });
+
+    function right_submit(){
+        {% if user != "null" and user != "fail" %}
+            var name = document.getElementById("name").value;
+            var url = document.getElementById("url").value;
+            var parentNode = document.getElementById("parentNode").value;
+            var str_data = `{"parentNode": "${parentNode}","name": "${name}","url":"${url}"}`;
+            if(trim(name) != "" || trime(parentNode) != ""){
+                htmlobj=$.ajax({url:"addjson?data="+str_data,async:false});
+                if(htmlobj.responseText=="success"){
+                    document.getElementById("name").value = "";
+                    document.getElementById("url").value = "";
+                    document.getElementById("parentNode").value = "";
+                    self.close();
+                }
+            }
+        {% else %}
+            alert("please login !!!");
+        {% endif %}
+
+    }
+</script>
+</html>

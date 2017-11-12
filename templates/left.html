@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title></title>
+    <style type="text/css">
+
+    a{
+        color: #004B6B;
+        text-decoration:none;
+    }
+
+    a.reference {
+        border-bottom: 1px dotted #004B6B;
+        text-decoration: none;
+    }
+
+    body li{
+        line-height: 1.4em;
+    }
+    body{
+        font-family: 'Georgia', serif;
+        font-size: 17px;
+        background-image: linear-gradient(270deg, #fff,#F9F0DA);
+    }
+    .outer{
+        font-size: 20px;
+        margin-top: -20px;
+    }
+    .inner{
+        font-size: 17px;
+    }
+
+    h2{
+        cursor:pointer;
+    }
+    </style>
+    <script src="{{url_for('static', filename='browser.min.js')}}"></script>
+    <script src="{{url_for('static', filename='jquery.min.js')}}"></script>
+</head>
+<body>
+<h2 id="h2">Guide</h2>
+
+<div id="div_content">
+</div>
+</body>
+<script type="text/babel">
+    class Content{
+        constructor(name,url,arr){
+            this.name = name;
+            this.url = url == ""?"right":url;
+            this.subContent = arr;
+        }
+        
+        getsubContent(){
+            let str = "";
+            if(this.subContent.length > 0){
+                for (var i = this.subContent.length - 1; i >= 0; i--) {
+                    str = str + `
+                            <li>
+                                <a href="${this.subContent[i].url}" target="blank">${this.subContent[i].name}</a>
+                            </li>`;
+                }
+            }
+            return str;
+        }
+
+    }
+
+    let subContent1 = new Content("Baidu_sub1","http://www.baidu.com");
+    let subContent2 = new Content("Baidu_sub2","http://www.baidu.com");
+
+
+
+    let mainContent = new Content("Baidu","http://www.baidu.com",subContent1,subContent2);
+
+    let additems = (obj)=>{
+        let str_tmp = "";
+        for(let var_item of obj){
+            let t_name = var_item.name;
+            let t_url = var_item.url;
+            let t_sub = var_item.getsubContent();
+
+                str_tmp = str_tmp+
+            `    <ul class="outer">
+                    <li>
+                        <a href="${t_url}" target="blank">${t_name}</a>
+                        <ul class="inner">
+                            ${t_sub}
+                        </ul>
+                    </li>
+                </ul>
+            `;
+        }
+        document.getElementById("div_content").innerHTML = str_tmp;
+    }
+
+    let init_array = [];
+
+
+    $(document).ready(function(){
+        let htmlobj=$.ajax({url:"getjson",async:false});
+        let json = JSON.parse(htmlobj.responseText);
+        for(let item of json){
+        let subcont;
+            if("[]" == item.subContent){
+                let a = [];
+                subcont = new Content(item.name,item.url,a);
+            }
+            else{
+                subcont = new Content(item.name,item.url,item.subContent);
+            }
+
+            init_array.push(subcont);
+        }
+        additems(init_array);
+
+        $("#h2").click(function refresh(){
+            var right=window.parent.window.document.getElementById("right");
+            right.contentWindow.document.location="right";
+        });
+    });
+
+
+</script>

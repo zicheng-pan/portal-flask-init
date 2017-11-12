@@ -1,0 +1,282 @@
+<html>
+<head>
+    <style>
+        body{
+        font-family:cursive;
+        }
+        #search{
+        font-family: inherit;
+        display:block;
+        }
+        #search form{
+        position:relative;
+        width:580px;
+        margin:0 auto;
+        margin-top:35px;
+        margin-bottom:50px;
+        }
+        #search input{
+
+        width: 100%;
+        height: 42px;
+        padding-left: 10px;
+        border: 2px solid #7BA7AB;
+        border-radius: 5px;
+        outline: none;
+        background: #F9F0DA;
+        color: #9E9C9C;
+
+        }
+        #search button{
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 42px;
+        height: 42px;
+        border: none;
+        background: #7BA7AB;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 100%;
+        margin: 0;
+        -webkit-appearance: button;
+        line-height: normal;
+        align-items: flex-start;
+        text-align: center;
+        }
+        #search button:before{
+        content: "?";
+        font-family: FontAwesome;
+        font-size: 16px;
+        color: #F9F0DA;
+        }
+
+        #title{
+        margin:0 auto;
+        width:fit-content;
+        width:-webkit-fit-content;
+        width:-moz-fit-content;
+        margin-top:50px;
+        font-size: 42px;
+        font-family: HelveticaNeue-Light, 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        #text-shadow: 6px 2px 2px #666666;
+        }
+
+        /* arrow box*/
+        .arrow_box {
+        position: absolute;
+        background: rgba(255, 255, 255, 1);
+        /*border: 0px solid #c2e1f5;*/
+        box-shadow: 0 0 7px rgba(189, 183, 107, 0.4);
+        border-radius: 15px 5px;
+        border-color: #00c1de;
+        z-index: 999;
+        }
+
+        .arrow_box:after, .arrow_box:before {
+        bottom: 100%;
+        left: 95%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        }
+
+        .arrow_box:after {
+        border-color: rgba(189, 183, 107, 0);
+        border-bottom-color: rgba(255, 255, 255, 1);
+        border-width: 5px;
+        margin-left: -5px;
+        }
+
+        .arrow_box:before {
+        /*
+        border-color: rgba(194, 225, 245, 0);
+        border-bottom-color: #c2e1f5; */
+        border-width: 6px;
+        margin-left: -6px;
+        }
+
+        .navbutton {
+        display: inline-block;
+        background-image: url({{url_for('static', filename='img/bg1_64.png')}});
+        background-size: 40px 40px;
+        width: 40px;
+        height: 40px;
+        opacity: 0.5;
+        }
+
+        .navbutton:HOVER {
+        cursor: pointer;
+        opacity: 1;
+        }
+
+        /* arrow box end */
+
+        /* small details in navigate */
+        .small_details {
+        float: left;
+        width: 80px;
+        height: 80px;
+        margin: 10px;
+        }
+
+        .small_details:HOVER {
+        box-shadow: 0 0 8px rgba(0, 198, 226, 0.8);
+        border-color: #00c1de;
+        cursor: pointer;
+        }
+
+        .small_details .small_details_img {
+        display: inline-block;
+        vertical-align: top;
+        height: 50px;
+        width: 50px;
+        padding-top: 10px;
+        padding-left: 25px;
+        }
+
+        .small_details .small_details_font {
+        font-size: 13px;
+        text-align: center;
+        display: block;
+        line-height: 20px;
+        width: 80px;
+        background: rgba(255, 255, 255, .9);
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        }
+
+        /* small details in navigate end*/
+
+
+
+
+    </style>
+
+    <style type="text/css">
+	#clock{
+		font-family: 'Days One',"Microsoft YaHei", Arial,sans-serif;
+		font-size: 2em;
+	}
+
+
+
+    </style>
+</head>
+
+<script src="{{url_for('static', filename='browser.min.js')}}"></script>
+<script src="{{url_for('static', filename='jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='jquery.countdown.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/normalize.css')}}"/>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/zzsc-demo.css')}}">
+<body>
+
+<div id="title">
+    Content-ZERG
+</div>
+
+
+<!-- fixed button with more buttons -->
+<div id="fixeddiv"
+     style="position: fixed; top: 10px; right: 15px; z-index: 999">
+    <!-- <button id="arrow_box_button" class="button button-circle button-raised button-primary"
+    > -->
+    <!-- <i class="fa fa-cloud"></i> -->
+    <a id="navbutton" class="navbutton"> </a>
+    <!--</button> -->
+    <div id="arrow_box" class="arrow_box"
+         style="position: fixed; top: 50px; right: 20px; width: 300px; display: none; z-index: 9999">
+
+        <div>
+            <div>
+                <a onclick="dropadmin(550,400)">
+                    <!--href="#"
+                    target="_blank"-->
+
+                    <div class="small_details">
+							<span class="small_details_img"
+                                  style="background: url({{url_for('static', filename='./img/Admin_48px_582754_easyicon.net.png')}}) no-repeat center center;"></span>
+                        <span class="small_details_font">Admin</span>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- fixed button with more buttons end -->
+
+
+<div id="search">
+
+    <form>
+        <input type="text" placeholder="A happly day start from here...">
+        <button type="submit"></button>
+    </form>
+</div>
+<div class="zzsc-content bgcolor-8" style="dis">
+    <p>距离2020年1月1日还有：</p>
+    <span id="clock"></span>
+</div>
+
+</body>
+<script>
+    $(document).ready(function(){
+    $('.navbutton').on('mouseenter', function(event) {
+
+    if ($('.arrow_box').css('display') == 'none') {
+    $('.arrow_box').css({
+    display : 'block'
+    });
+    } else {
+    $('.arrow_box').css({
+    display : 'none'
+    });
+    }
+
+    });
+
+    $('.arrow_box').on('mouseleave', function(event){
+    $('.arrow_box').css({
+    display : 'none'
+    });
+    });
+
+    });
+
+    let dropadmin = (iWidth,iHeight)=>{
+    var iTop = (window.screen.availHeight  - iHeight) / 2;
+    var iLeft = (window.screen.availWidth  - iWidth) / 2;
+    $windowObj = window.open('login','_blank','height=' + iHeight + ',innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no');
+    var loop = setInterval(function() {
+    if($windowObj  != null && $windowObj.closed) {
+    clearInterval(loop);
+    //do something 在这里执行回调
+    refreshleft();
+    }
+    }, 800);
+    }
+
+    $('#clock').countdown('2020/1/1', function(event) {
+    $(this).html(event.strftime('%D 天 %H:%M:%S'));
+    });
+
+    function refreshleft(){
+    // use frameset to control another document to reload
+    var left=window.parent.window.document.getElementById("left");
+    left.contentWindow.document.location.reload();
+    }
+
+</script>
+
+<script type="text/javascript">
+
+</script>
+</html>
+
