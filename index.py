@@ -2,6 +2,7 @@ from flask import Flask,request
 from flask import render_template,make_response
 import json
 import os
+import tools
 app = Flask(__name__)
 json_location = "json/data.json"
 
@@ -24,7 +25,9 @@ def left():
 
 @app.route("/right")
 def right():
-    return render_template('right.html')
+    date_time = tools.parseJsonFile_cutdowntime()
+    date_obj = json.loads(date_time)
+    return render_template('right.html',year=date_obj["year"],month=date_obj["month"],day=date_obj["day"])
 
 
 @app.route("/addjson")
@@ -73,6 +76,8 @@ def getjson():
 
 @app.route("/login")
 def login():
+    date_time = tools.parseJsonFile_cutdowntime()
+    date_obj = json.loads(date_time)
     info = request.args.get("info","null")
     user = "null"
     if info and info != "null":
@@ -85,4 +90,4 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run(debug=True,host="0.0.0.0")
+    app.run(debug=True,host="0.0.0.0",port=80)

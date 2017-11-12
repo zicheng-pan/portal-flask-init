@@ -46,7 +46,7 @@
         text-align: center;
         }
         #search button:before{
-        content: "?";
+        content: "搜索";
         font-family: FontAwesome;
         font-size: 16px;
         color: #F9F0DA;
@@ -154,16 +154,20 @@
         /* small details in navigate end*/
 
 
-
-
-    </style>
-
-    <style type="text/css">
-	#clock{
-		font-family: 'Days One',"Microsoft YaHei", Arial,sans-serif;
-		font-size: 2em;
-	}
-
+        #clock{
+        font-family: 'Days One',"Microsoft YaHei", Arial,sans-serif;
+        font-size: 2em;
+        }
+        .present_div{
+        text-align:center; width:30%; float:left;
+        margin:10px 5px;
+        border: 2px solid #666;
+        border-radius: 5px;
+        height:200px;
+        justify-content:center;//子元素水平居中
+        align-items:center;//子元素垂直居中
+        display:-webkit-flex;
+        }
 
 
     </style>
@@ -172,8 +176,6 @@
 <script src="{{url_for('static', filename='browser.min.js')}}"></script>
 <script src="{{url_for('static', filename='jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='jquery.countdown.js')}}"></script>
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/normalize.css')}}"/>
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/zzsc-demo.css')}}">
 <body>
 
 <div id="title">
@@ -220,11 +222,14 @@
         <button type="submit"></button>
     </form>
 </div>
-<div class="zzsc-content bgcolor-8" style="dis">
-    <p>距离2020年1月1日还有：</p>
+<div class="present_div" style="padding-top:40px; height:160px;">
+    <p>距离{{ year }}年{{ month }}月{{ day }}日还有：</p>
     <span id="clock"></span>
 </div>
-
+<div class="present_div" ></div>
+<div class="present_div" ></div>
+<div class="present_div" ></div>
+<div class="present_div" ></div>
 </body>
 <script>
     $(document).ready(function(){
@@ -263,7 +268,7 @@
     }, 800);
     }
 
-    $('#clock').countdown('2020/1/1', function(event) {
+    $('#clock').countdown('{{ year }}/{{ month }}/{{ day }}', function(event) {
     $(this).html(event.strftime('%D 天 %H:%M:%S'));
     });
 
@@ -272,10 +277,6 @@
     var left=window.parent.window.document.getElementById("left");
     left.contentWindow.document.location.reload();
     }
-
-</script>
-
-<script type="text/javascript">
 
 </script>
 </html>
